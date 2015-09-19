@@ -1,0 +1,35 @@
+{
+  "name": "universal-api",
+  "version": "0.0.1",
+  "description": "universal-api",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node cli.js",
+    "test": "mocha --require babel/register",
+    "test:watch": "mocha -w --require babel/register",
+    "prebuild": "rm -rf dist && mkdir dist",
+    "build": "babel -d dist/ src/",
+    "prepublish": "npm run build"
+  },
+  "preferGlobal": "true",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ewnd9/universal-api.git"
+  },
+  "keywords": [
+    "api", "universal"
+  ],
+  "author": "ewnd9 <ewndnine@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.10.0",
+    "detect-node": "^2.0.3",
+    "superagent": "^1.4.0",
+    "superagent-jsonp": "0.0.5"
+  },
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  }
+}
