@@ -1,6 +1,6 @@
 {
   "name": "universal-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "universal-api",
   "main": "dist/index.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "url": "git+https://github.com/ewnd9/universal-api.git"
   },
   "keywords": [
-    "api", "universal"
+    "api",
+    "universal"
   ],
   "author": "ewnd9 <ewndnine@gmail.com>",
   "license": "MIT",
