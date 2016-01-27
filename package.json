@@ -9,6 +9,7 @@
     "test:watch": "mocha -w --require babel/register",
     "prebuild": "rm -rf dist && mkdir dist",
     "build": "babel -d dist/ src/",
+    "build:watch": "babel --watch -d dist/ src/",
     "prepublish": "npm run build"
   },
   "preferGlobal": "true",
