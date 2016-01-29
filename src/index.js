@@ -15,9 +15,9 @@ function UniversalApi({ baseUrl = '', jsonp = false, query, body, headers, trans
   }
 };
 
-const fnOrObject = input => {
+function fnOrObject(input) {
   if (typeof input === 'function') {
-    return input();
+    return input.call(this);
   } else {
     return input || {};
   }
@@ -32,7 +32,7 @@ UniversalApi.prototype.request = function(method, url, query = {}, body = {}, he
     }
 
     const requestQuery = {
-      ...fnOrObject(this.query),
+      ...fnOrObject.call(this, this.query),
       ...query
     };
 
@@ -40,7 +40,7 @@ UniversalApi.prototype.request = function(method, url, query = {}, body = {}, he
 
     if (method === 'POST' || method === 'PUT') {
       const requestBody = {
-        ...fnOrObject(this.body),
+        ...fnOrObject.call(this, this.body),
         ...body
       };
 
@@ -48,7 +48,7 @@ UniversalApi.prototype.request = function(method, url, query = {}, body = {}, he
     }
 
     const requestHeaders = {
-      ...fnOrObject(this.headers),
+      ...fnOrObject.call(this, this.headers),
       ...headers
     };
 
@@ -88,6 +88,10 @@ UniversalApi.prototype.delete = function(url, query = {}, headers = {}) {
 
 UniversalApi.prototype.head = function(url, query = {}, headers = {}) {
   return this.request('HEAD', url, query, null, headers);
+};
+
+UniversalApi.prototype.setToken = function(token) {
+  this.token = token;
 };
 
 export default UniversalApi;

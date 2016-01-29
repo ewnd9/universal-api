@@ -12,7 +12,6 @@
     "build:watch": "babel --watch -d dist/ src/",
     "prepublish": "npm run build"
   },
-  "preferGlobal": "true",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ewnd9/universal-api.git"
