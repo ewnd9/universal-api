@@ -12,12 +12,13 @@ Because it sucks to have different libs on backend and frontend.
 $ npm install universal-api --save
 ```
 
-## Dependents
+## Used in
 
 - [`vk-universal-api`](https://www.npmjs.com/package/vk-universal-api)
 
 ## Changelog
 
+- `v0.2.0` - add `attach` and `field` to `POST` and `PUT` requests
 - `v0.1.0` - breaking changes due to complete refactor
 
 ## License

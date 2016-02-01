@@ -23,9 +23,16 @@ function fnOrObject(input) {
   }
 };
 
-UniversalApi.prototype.request = function(method, url, query = {}, body = {}, headers = {}) {
+UniversalApi.prototype.request = function(method, url, query = {}, body = {}, form = {}, headers = {}) {
+  const { attach = {}, field = {} } = form;
+
   const result = new Promise((resolve, reject) => {
-    const req = superagent(method, this.baseUrl + url);
+    const reqUrl = (
+      url.indexOf('http://') === 0 || url.indexOf('https://') === 0 ?
+        url : this.baseUrl + url
+    );
+
+    const req = superagent(method, reqUrl);
 
     if (this.jsonp) {
       req.jsonp();
@@ -39,12 +46,17 @@ UniversalApi.prototype.request = function(method, url, query = {}, body = {}, he
     req.query(requestQuery);
 
     if (method === 'POST' || method === 'PUT') {
-      const requestBody = {
-        ...fnOrObject.call(this, this.body),
-        ...body
-      };
+      if (Object.keys(attach).length > 0 || Object.keys(field).length > 0) {
+        Object.keys(attach).forEach(key => req.attach(key, attach[key]));
+        Object.keys(field).forEach(key => req.field(key, field[key]));
+      } else {
+        const requestBody = {
+          ...fnOrObject.call(this, this.body),
+          ...body
+        };
 
-      req.send(requestBody);
+        req.send(requestBody);
+      }
     }
 
     const requestHeaders = {
@@ -58,7 +70,7 @@ UniversalApi.prototype.request = function(method, url, query = {}, body = {}, he
       if (err) {
         reject(err);
       } else {
-        resolve(res.body);
+        resolve(res);
       }
     });
   });
@@ -71,23 +83,23 @@ UniversalApi.prototype.request = function(method, url, query = {}, body = {}, he
 };
 
 UniversalApi.prototype.get = function(url, query = {}, headers = {}) {
-  return this.request('GET', url, query, null, headers);
+  return this.request('GET', url, query, undefined, undefined, headers);
 };
 
-UniversalApi.prototype.post = function(url, query = {}, body = {}, headers = {}) {
-  return this.request('POST', url, query, body, headers);
+UniversalApi.prototype.post = function(url, query = {}, body = {}, form = {}, headers = {}) {
+  return this.request('POST', url, query, body, form, headers);
 };
 
-UniversalApi.prototype.put = function(url, query = {}, body = {}, headers = {}) {
-  return this.request('PUT', url, query, body, headers);
+UniversalApi.prototype.put = function(url, query = {}, body = {}, form = {}, headers = {}) {
+  return this.request('PUT', url, query, body, form, headers);
 };
 
 UniversalApi.prototype.delete = function(url, query = {}, headers = {}) {
-  return this.request('DELETE', url, query, null, headers);
+  return this.request('DELETE', url, query, undefined, undefined, headers);
 };
 
 UniversalApi.prototype.head = function(url, query = {}, headers = {}) {
-  return this.request('HEAD', url, query, null, headers);
+  return this.request('HEAD', url, query, undefined, undefined, headers);
 };
 
 UniversalApi.prototype.setToken = function(token) {
